@@ -1,5 +1,5 @@
 use dotenv::dotenv;
-use poise::serenity_prelude as serenity;
+use poise::serenity_prelude::{self as serenity};
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
 type Context<'a> = poise::Context<'a, Data, Error>;
@@ -18,6 +18,24 @@ async fn age(
     Ok(())
 }
 
+/// Displays info about user
+#[poise::command(slash_command, prefix_command)]
+async fn user(
+    ctx: Context<'_>,
+    #[description = "Selected user"] user: Option<serenity::User>,
+) -> Result<(), Error> {
+    let u = user.as_ref().unwrap_or_else(|| ctx.author());
+
+    ctx.send(|reply| {
+        reply.embed(|e| {
+            e.title(u.clone().name)
+                .thumbnail(u.avatar_url().expect("fuck you"))
+        })
+    })
+    .await?;
+    Ok(())
+}
+
 #[poise::command(prefix_command)]
 async fn register(ctx: Context<'_>) -> Result<(), Error> {
     poise::builtins::register_application_commands_buttons(ctx).await?;
@@ -31,7 +49,7 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![age(), register()],
+            commands: vec![age(), register(), user()],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("~".to_string()),
                 ..Default::default()
