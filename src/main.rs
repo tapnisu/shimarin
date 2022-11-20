@@ -29,7 +29,7 @@ async fn user(
     ctx.send(|reply| {
         reply.embed(|e| {
             e.title(u.clone().name + "#" + &u.clone().discriminator.to_string())
-                .thumbnail(u.avatar_url().expect("fuck you"))
+                .thumbnail(u.avatar_url().expect("no pfp"))
         })
     })
     .await?;
