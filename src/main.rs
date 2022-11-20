@@ -28,8 +28,13 @@ async fn user(
 
     ctx.send(|reply| {
         reply.embed(|e| {
-            e.title(u.clone().name + "#" + &u.clone().discriminator.to_string())
-                .thumbnail(u.avatar_url().expect("no pfp"))
+            e.title(u.clone().name + "#" + &u.clone().discriminator.to_string());
+
+            if let Some(avatar_url) = u.clone().avatar_url() {
+                e.thumbnail(avatar_url);
+            }
+
+            e
         })
     })
     .await?;
