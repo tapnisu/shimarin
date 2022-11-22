@@ -28,11 +28,13 @@ async fn user(
 
     ctx.send(|reply| {
         reply.embed(|e| {
-            e.title(u.clone().name + "#" + &u.clone().discriminator.to_string());
+            e.title(u.tag());
 
             if let Some(avatar_url) = u.clone().avatar_url() {
                 e.thumbnail(avatar_url);
             }
+
+            e.fields(vec![("ID".to_string(), u.id.to_string(), true)]);
 
             e
         })
