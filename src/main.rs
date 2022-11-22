@@ -43,6 +43,29 @@ async fn user(
     Ok(())
 }
 
+/// Displays info about user
+#[poise::command(slash_command, prefix_command)]
+async fn avatar(
+    ctx: Context<'_>,
+    #[description = "Selected user"] user: Option<serenity::User>,
+) -> Result<(), Error> {
+    let u = user.as_ref().unwrap_or_else(|| ctx.author());
+
+    ctx.send(|reply| {
+        reply.embed(|e| {
+            e.title(u.tag());
+
+            if let Some(avatar_url) = u.clone().avatar_url() {
+                e.image(avatar_url);
+            }
+
+            e
+        })
+    })
+    .await?;
+    Ok(())
+}
+
 #[poise::command(prefix_command)]
 async fn register(ctx: Context<'_>) -> Result<(), Error> {
     poise::builtins::register_application_commands_buttons(ctx).await?;
@@ -56,7 +79,7 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![age(), register(), user()],
+            commands: vec![age(), avatar(), register(), user()],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("~".to_string()),
                 ..Default::default()
