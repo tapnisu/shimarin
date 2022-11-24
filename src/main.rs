@@ -80,8 +80,11 @@ async fn ghuser(
         .await?;
 
     if &page.items.len() == &0usize {
-        ctx.send(|reply| reply.embed(|e| e.title("User not found!")))
-            .await?;
+        ctx.send(|reply| {
+            reply.ephemeral(true);
+            reply.embed(|e| e.title("User not found!"))
+        })
+        .await?;
 
         return Ok(());
     }
@@ -117,8 +120,11 @@ async fn ghrepo(
         .await?;
 
     if &page.items.len() == &0usize {
-        ctx.send(|reply| reply.embed(|e| e.title("Repository not found!")))
-            .await?;
+        ctx.send(|reply| {
+            reply.ephemeral(true);
+            reply.embed(|e| e.title("Repository not found!"))
+        })
+        .await?;
 
         return Ok(());
     }
