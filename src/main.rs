@@ -72,10 +72,7 @@ async fn ghuser(
     ctx: Context<'_>,
     #[description = "User to search for"] username: String,
 ) -> Result<(), Error> {
-    let octocrab = octocrab::instance();
-
-    // User from github
-    let page = octocrab
+    let page = octocrab::instance()
         .search()
         .users(&username.trim())
         .per_page(1)
