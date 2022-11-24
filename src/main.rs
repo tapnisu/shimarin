@@ -70,11 +70,11 @@ async fn avatar(
 #[poise::command(slash_command, prefix_command)]
 async fn ghuser(
     ctx: Context<'_>,
-    #[description = "User to search for"] username: String,
+    #[description = "User to search for"] query: String,
 ) -> Result<(), Error> {
     let page = octocrab::instance()
         .search()
-        .users(&username.trim())
+        .users(&query.trim())
         .per_page(1)
         .send()
         .await?;
@@ -103,6 +103,70 @@ async fn ghuser(
     Ok(())
 }
 
+/// Display info about repository from GitHub
+#[poise::command(slash_command, prefix_command)]
+async fn ghrepo(
+    ctx: Context<'_>,
+    #[description = "Repository to search for"] query: String,
+) -> Result<(), Error> {
+    let page = octocrab::instance()
+        .search()
+        .repositories(&query.trim())
+        .per_page(1)
+        .send()
+        .await?;
+
+    if &page.items.len() == &0usize {
+        ctx.send(|reply| reply.embed(|e| e.title("Repository not found!")))
+            .await?;
+
+        return Ok(());
+    }
+
+    let r = &page.items[0];
+
+    ctx.send(|reply| {
+        reply.embed(|e| {
+            e.title(&r.name);
+            if let Some(desc) = &r.description {
+                e.description(desc);
+            }
+
+            if let Some(html_url) = &r.html_url {
+                e.url(&html_url);
+            }
+
+            e.fields(vec![("ID", &r.id, true)]);
+
+            if let Some(clone_url) = &r.clone_url {
+                e.field("Clone url", &clone_url, true);
+            }
+
+            if let Some(stargazers_count) = &r.stargazers_count {
+                e.field("Stargazers count", &stargazers_count, true);
+            }
+
+            if let Some(forks_count) = &r.forks_count {
+                e.field("Forks count", &forks_count, true);
+            }
+
+            if let Some(fork) = &r.fork {
+                if *fork {
+                    e.field("Fork", "true", true);
+                }
+            }
+
+            if let Some(default_branch) = &r.default_branch {
+                e.field("Default branch", default_branch, true);
+            }
+
+            e
+        })
+    })
+    .await?;
+    Ok(())
+}
+
 #[poise::command(prefix_command)]
 async fn register(ctx: Context<'_>) -> Result<(), Error> {
     poise::builtins::register_application_commands_buttons(ctx).await?;
@@ -116,7 +180,7 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![age(), avatar(), register(), user(), ghuser()],
+            commands: vec![age(), avatar(), register(), user(), ghuser(), ghrepo()],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("~".to_string()),
                 ..Default::default()
