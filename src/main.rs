@@ -66,6 +66,46 @@ async fn avatar(
     Ok(())
 }
 
+/// Display info about user from GitHub
+#[poise::command(slash_command, prefix_command)]
+async fn ghuser(
+    ctx: Context<'_>,
+    #[description = "User to search for"] username: String,
+) -> Result<(), Error> {
+    let octocrab = octocrab::instance();
+
+    // User from github
+    let page = octocrab
+        .search()
+        .users(&username.trim())
+        .per_page(1)
+        .send()
+        .await?;
+
+    if &page.items.len() == &0usize {
+        ctx.send(|reply| reply.embed(|e| e.title("User not found!")))
+            .await?;
+
+        return Ok(());
+    }
+
+    let u = &page.items[0];
+
+    ctx.send(|reply| {
+        reply.embed(|e| {
+            e.title(&u.login);
+            e.url(&u.url);
+            e.thumbnail(&u.avatar_url);
+
+            e.fields(vec![("ID", &u.id, true)]);
+
+            e
+        })
+    })
+    .await?;
+    Ok(())
+}
+
 #[poise::command(prefix_command)]
 async fn register(ctx: Context<'_>) -> Result<(), Error> {
     poise::builtins::register_application_commands_buttons(ctx).await?;
@@ -79,7 +119,7 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![age(), avatar(), register(), user()],
+            commands: vec![age(), avatar(), register(), user(), ghuser()],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("~".to_string()),
                 ..Default::default()
