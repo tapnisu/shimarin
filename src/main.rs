@@ -1,4 +1,4 @@
-use dotenv::dotenv;
+use dotenvy::dotenv;
 use poise::serenity_prelude::{self as serenity};
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
