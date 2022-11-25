@@ -6,18 +6,6 @@ type Context<'a> = poise::Context<'a, Data, Error>;
 // User data, which is stored and accessible in all command invocations
 struct Data {}
 
-/// Displays your or another user's account creation date
-#[poise::command(slash_command, prefix_command)]
-async fn age(
-    ctx: Context<'_>,
-    #[description = "Selected user"] user: Option<serenity::User>,
-) -> Result<(), Error> {
-    let u = user.as_ref().unwrap_or_else(|| ctx.author());
-    let response = format!("{}'s account was created at {}", u.name, u.created_at());
-    ctx.say(response).await?;
-    Ok(())
-}
-
 /// Displays info about user
 #[poise::command(slash_command, prefix_command)]
 async fn user(
@@ -186,7 +174,7 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![age(), avatar(), register(), user(), ghuser(), ghrepo()],
+            commands: vec![avatar(), register(), user(), ghuser(), ghrepo()],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("~".to_string()),
                 ..Default::default()
