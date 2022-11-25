@@ -130,18 +130,20 @@ async fn ghrepo(
                 e.url(&html_url);
             }
 
-            e.fields(vec![("ID", &r.id, true)]);
+            if let Some(watchers_count) = &r.watchers_count {
+                e.field("Watchers count", &watchers_count, true);
+            }
 
-            if let Some(clone_url) = &r.clone_url {
-                e.field("Clone url", &clone_url, true);
+            if let Some(forks_count) = &r.forks_count {
+                e.field("Forks count", &forks_count, true);
             }
 
             if let Some(stargazers_count) = &r.stargazers_count {
                 e.field("Stargazers count", &stargazers_count, true);
             }
 
-            if let Some(forks_count) = &r.forks_count {
-                e.field("Forks count", &forks_count, true);
+            if let Some(clone_url) = &r.clone_url {
+                e.field("Clone url", &clone_url, false);
             }
 
             if let Some(fork) = &r.fork {
@@ -153,6 +155,8 @@ async fn ghrepo(
             if let Some(default_branch) = &r.default_branch {
                 e.field("Default branch", default_branch, true);
             }
+
+            e.fields(vec![("ID", &r.id, true)]);
 
             e
         })
