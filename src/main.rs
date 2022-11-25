@@ -121,7 +121,12 @@ async fn ghrepo(
 
     ctx.send(|reply| {
         reply.embed(|e| {
-            e.title(&r.name);
+            if let Some(full_name) = &r.full_name {
+                e.title(full_name);
+            } else {
+                e.title(&r.name);
+            }
+
             if let Some(desc) = &r.description {
                 e.description(desc);
             }
