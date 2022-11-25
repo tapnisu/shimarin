@@ -18,7 +18,7 @@ Yuru Camp manga.
 ## Invite
 
 You can invite the bot by
-[this link](https://discord.com/api/oauth2/authorize?client_id=1038694628490235904&permissions=1806070768902&scope=bot%20applications.commands).
+[this link](https://discord.com/api/oauth2/authorize?client_id=1038694628490235904&permissions=1806070770950&scope=applications.commands%20bot).
 Type "/" to see commands!
 
 ## Host
