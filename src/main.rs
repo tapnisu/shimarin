@@ -1,5 +1,5 @@
 use dotenvy::dotenv;
-use poise::serenity_prelude::{self as serenity};
+use poise::serenity_prelude::{self as serenity, Activity};
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
 type Context<'a> = poise::Context<'a, Data, Error>;
@@ -192,7 +192,13 @@ async fn main() {
         })
         .token(std::env::var("DISCORD_TOKEN").expect("missing DISCORD_TOKEN"))
         .intents(serenity::GatewayIntents::non_privileged())
-        .setup(move |_ctx, _ready, _framework| Box::pin(async move { Ok(Data {}) }));
+        .setup(|ctx, _ready, framework| {
+            Box::pin(async move {
+                poise::builtins::register_globally(ctx, &framework.options().commands).await?;
+                ctx.set_activity(Activity::playing("Reading book")).await;
+                Ok(Data {})
+            })
+        });
 
     framework.run().await.unwrap();
 }
