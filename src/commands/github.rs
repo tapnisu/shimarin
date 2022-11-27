@@ -1,53 +1,4 @@
 use crate::exports::*;
-use poise::serenity_prelude::{self as serenity};
-
-/// Displays info about user
-#[poise::command(slash_command, prefix_command)]
-pub async fn user(
-    ctx: Context<'_>,
-    #[description = "Selected user"] user: Option<serenity::User>,
-) -> Result<(), Error> {
-    let u = user.as_ref().unwrap_or_else(|| ctx.author());
-
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title(u.tag());
-
-            if let Some(avatar_url) = u.clone().avatar_url() {
-                e.thumbnail(avatar_url);
-            }
-
-            e.fields(vec![("ID".to_string(), u.id.to_string(), true)]);
-
-            e
-        })
-    })
-    .await?;
-    Ok(())
-}
-
-/// Displays info about user
-#[poise::command(slash_command, prefix_command)]
-pub async fn avatar(
-    ctx: Context<'_>,
-    #[description = "Selected user"] user: Option<serenity::User>,
-) -> Result<(), Error> {
-    let u = user.as_ref().unwrap_or_else(|| ctx.author());
-
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title(u.tag());
-
-            if let Some(avatar_url) = u.clone().avatar_url() {
-                e.image(avatar_url);
-            }
-
-            e
-        })
-    })
-    .await?;
-    Ok(())
-}
 
 /// Display info about user from GitHub
 #[poise::command(slash_command, prefix_command)]
@@ -162,43 +113,5 @@ pub async fn ghrepo(
         })
     })
     .await?;
-    Ok(())
-}
-
-/// Generate password
-#[poise::command(slash_command, prefix_command)]
-pub async fn password(
-    ctx: Context<'_>,
-    #[description = "Length of password"] length: usize,
-) -> Result<(), Error> {
-    ctx.send(|reply| {
-        reply.ephemeral(true);
-        reply.embed(|e| {
-            e.title("Your password")
-                .description("||".to_owned() + &gen_password(length) + &"||".to_owned())
-        })
-    })
-    .await?;
-
-    Ok(())
-}
-
-/// Convert HTML to text
-#[poise::command(slash_command, prefix_command)]
-pub async fn fromhtml(
-    ctx: Context<'_>,
-    #[description = "HTML to convert to text"] text: String,
-    #[description = "Width of formatted text"] width: Option<usize>,
-) -> Result<(), Error> {
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title("Your text").description(html2text::from_read(
-                text.as_bytes(),
-                if let Some(w) = width { w } else { 20 },
-            ))
-        })
-    })
-    .await?;
-
     Ok(())
 }
