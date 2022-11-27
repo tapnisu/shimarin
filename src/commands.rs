@@ -1,7 +1,5 @@
+use crate::exports::*;
 use poise::serenity_prelude::{self as serenity};
-use rand::Rng;
-
-pub use crate::exports::*;
 
 /// Displays info about user
 #[poise::command(slash_command, prefix_command)]
@@ -165,21 +163,6 @@ pub async fn ghrepo(
     })
     .await?;
     Ok(())
-}
-
-pub fn gen_password(pass_len: usize) -> String {
-    let charset: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        .chars()
-        .collect();
-    let mut password = String::with_capacity(pass_len);
-
-    let mut rng = rand::thread_rng();
-
-    for _ in 0..pass_len {
-        password.push(charset[rng.gen_range(0..charset.iter().count())])
-    }
-
-    password
 }
 
 /// Generate password
