@@ -1,7 +1,7 @@
 use crate::exports::*;
 use poise::serenity_prelude::{self as serenity};
 
-/// Displays info about user
+/// Send user's avatar
 #[poise::command(slash_command, prefix_command)]
 pub async fn avatar(
     ctx: Context<'_>,
