@@ -1,6 +1,6 @@
 <p align="center">
    <img width=400px src="assets/avatar.png" alt="Bot logo">
-   <h1 align="center">RShima</h1>
+   <h1 align="center">Shima Rin</h1>
    <h3 align="center">Multipurpose discord bot</h3>
 </p>
 
@@ -12,8 +12,8 @@
 
 ## Overview
 
-RShima is a discord bot, made using `Rust`. Bot is named after Rin Shima from
-Yuru Camp manga.
+Shima Rin is a discord bot, made using `Rust`. Bot is named after Shima Rin from
+Yuru Camp manga series.
 
 ## Invite
 
