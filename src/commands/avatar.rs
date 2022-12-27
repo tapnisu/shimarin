@@ -13,11 +13,7 @@ pub async fn avatar(
         reply.embed(|e| {
             e.title(u.tag());
 
-            if let Some(avatar_url) = u.clone().avatar_url() {
-                e.image(avatar_url);
-            }
-
-            e
+            e.image(u.clone().face())
         })
     })
     .await?;
