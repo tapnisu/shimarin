@@ -13,8 +13,10 @@ pub async fn user(
         reply.embed(|e| {
             e.title(u.tag());
 
-            if let Some(avatar_url) = u.clone().avatar_url() {
-                e.thumbnail(avatar_url);
+            e.thumbnail(u.clone().face());
+
+            if let Some(banner_url) = u.clone().banner_url() {
+                e.image(banner_url);
             }
 
             e.fields(vec![("ID".to_string(), u.id.to_string(), true)]);

@@ -1,4 +1,4 @@
-use rshima::gen_password;
+use shimarin::gen_password;
 
 #[test]
 fn it_works() {
