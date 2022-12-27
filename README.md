@@ -1,6 +1,6 @@
 <p align="center">
    <img width=400px src="assets/avatar.png" alt="Bot logo">
-   <h1 align="center">Shima Rin</h1>
+   <h1 align="center">Shimarin</h1>
    <h3 align="center">Multipurpose discord bot</h3>
 </p>
 
@@ -12,7 +12,7 @@
 
 ## Overview
 
-Shima Rin is a discord bot, made using `Rust`. Bot is named after Shima Rin from
+Shimarin is a discord bot, made using `Rust`. Bot is named after Shima Rin from
 Yuru Camp manga series.
 
 ## Invite
