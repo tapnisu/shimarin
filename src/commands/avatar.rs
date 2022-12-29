@@ -17,5 +17,6 @@ pub async fn avatar(
         })
     })
     .await?;
+
     Ok(())
 }

@@ -25,5 +25,6 @@ pub async fn user(
         })
     })
     .await?;
+
     Ok(())
 }
