@@ -1,6 +1,8 @@
 use crate::exports::*;
 use serde::{Deserialize, Serialize};
 
+use poise::serenity_prelude::{self as serenity};
+
 #[derive(Debug, Serialize, Deserialize)]
 struct MangaSearchItem {
     id: String,
@@ -45,6 +47,20 @@ pub async fn manga(
             e.fields(vec![("Last chapter", &manga.last_chapter, true)]);
 
             e
+        });
+
+        reply.components(|c| {
+            c.add_action_row(
+                serenity::CreateActionRow::default()
+                    .add_button(
+                        serenity::CreateButton::default()
+                            .label("Read manga in browser")
+                            .url(&manga.url)
+                            .style(serenity::ButtonStyle::Link)
+                            .to_owned(),
+                    )
+                    .to_owned(),
+            )
         })
     })
     .await?;
