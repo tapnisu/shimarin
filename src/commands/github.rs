@@ -1,5 +1,7 @@
 use crate::exports::*;
 
+use poise::serenity_prelude::{self as serenity};
+
 /// Display info about user from GitHub
 #[poise::command(slash_command, prefix_command)]
 pub async fn ghuser(
@@ -34,6 +36,20 @@ pub async fn ghuser(
             e.fields(vec![("ID", &u.id, true)]);
 
             e
+        });
+
+        reply.components(|c| {
+            c.add_action_row(
+                serenity::CreateActionRow::default()
+                    .add_button(
+                        serenity::CreateButton::default()
+                            .label("Open in browser")
+                            .url(&u.url)
+                            .style(serenity::ButtonStyle::Link)
+                            .to_owned(),
+                    )
+                    .to_owned(),
+            )
         })
     })
     .await?;
@@ -110,6 +126,20 @@ pub async fn ghrepo(
             e.fields(vec![("ID", &r.id, true)]);
 
             e
+        });
+
+        reply.components(|c| {
+            c.add_action_row(
+                serenity::CreateActionRow::default()
+                    .add_button(
+                        serenity::CreateButton::default()
+                            .label("Open in browser")
+                            .url(&r.url)
+                            .style(serenity::ButtonStyle::Link)
+                            .to_owned(),
+                    )
+                    .to_owned(),
+            )
         })
     })
     .await?;
