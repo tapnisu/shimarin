@@ -1,7 +1,7 @@
 use crate::exports::*;
 use poise::serenity_prelude::{self as serenity};
 
-/// Displays info about user
+/// Get info about user
 #[poise::command(slash_command, prefix_command)]
 pub async fn user(
     ctx: Context<'_>,
