@@ -14,7 +14,7 @@ async fn main() {
         .options(poise::FrameworkOptions {
             commands: vec![avatar(), password(), user(), ghuser(), ghrepo(), fromhtml()],
             prefix_options: poise::PrefixFrameworkOptions {
-                prefix: Some("~".into()),
+                prefix: Some("sr!".into()),
                 ..Default::default()
             },
             ..Default::default()
