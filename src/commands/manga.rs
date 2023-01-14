@@ -40,13 +40,10 @@ pub async fn manga(
 
     ctx.send(|reply| {
         reply.embed(|e| {
-            e.title(&manga.name);
-            e.url(&manga.url);
-            e.image(&manga.thumbnail);
-
-            e.fields(vec![("Last chapter", &manga.last_chapter, true)]);
-
-            e
+            e.title(&manga.name)
+                .url(&manga.url)
+                .image(&manga.thumbnail)
+                .fields(vec![("Last chapter", &manga.last_chapter, true)])
         });
 
         reply.components(|c| {

@@ -9,14 +9,8 @@ pub async fn avatar(
 ) -> Result<(), Error> {
     let u = user.as_ref().unwrap_or_else(|| ctx.author());
 
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title(u.tag());
-
-            e.image(u.clone().face())
-        })
-    })
-    .await?;
+    ctx.send(|reply| reply.embed(|e| e.title(u.tag()).image(u.clone().face())))
+        .await?;
 
     Ok(())
 }
