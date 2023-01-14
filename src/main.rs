@@ -12,7 +12,15 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![avatar(), password(), user(), ghuser(), ghrepo(), fromhtml()],
+            commands: vec![
+                avatar(),
+                password(),
+                user(),
+                ghuser(),
+                ghrepo(),
+                fromhtml(),
+                manga(),
+            ],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("sr!".into()),
                 ..Default::default()
