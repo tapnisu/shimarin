@@ -4,12 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dotenvy = "0.15.6"
-html2text = "0.5.0"
-octocrab = "0.19.0"
-poise = "0.5.0"
-rand = "0.8.5"
-reqwest = { version = "0.11.13", features = ["json"] }
-serde = { version = "1.0.152", features = ["derive"] }
-serde_json = "1.0.91"
-tokio = { version = "1.22.0", features = ["full"] }
+dotenvy = "0.15"
+html2text = "0.6"
+octocrab = "0.29"
+poise = "0.5"
+rand = "0.8"
+reqwest = { version = "0.11", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
