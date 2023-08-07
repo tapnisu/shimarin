@@ -1,5 +1,4 @@
 use crate::exports::*;
-
 use poise::serenity_prelude::{self as serenity};
 
 /// Display info about user from GitHub

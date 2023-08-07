@@ -33,7 +33,9 @@ async fn main() {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
                 ctx.set_activity(Activity::playing("Reading book")).await;
+
                 println!("{} is connected!", _ready.user.tag());
+
                 Ok(Data {})
             })
         });
