@@ -26,7 +26,7 @@ pub async fn manga(
             .json()
             .await?;
 
-    if manga_list.len() == 0 {
+    if manga_list.is_empty() {
         ctx.send(|reply| {
             reply.ephemeral(true);
             reply.embed(|e| e.title("Sorry! Manga not found!"))

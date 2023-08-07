@@ -15,7 +15,7 @@ pub async fn ghuser(
         .send()
         .await?;
 
-    if &page.items.len() == &0usize {
+    if page.items.is_empty() {
         ctx.send(|reply| {
             reply.ephemeral(true);
             reply.embed(|e| e.title("User not found!"))
@@ -69,7 +69,7 @@ pub async fn ghrepo(
         .send()
         .await?;
 
-    if &page.items.len() == &0usize {
+    if page.items.is_empty() {
         ctx.send(|reply| {
             reply.ephemeral(true);
             reply.embed(|e| e.title("Repository not found!"))
@@ -94,23 +94,23 @@ pub async fn ghrepo(
             }
 
             if let Some(html_url) = &r.html_url {
-                e.url(&html_url);
+                e.url(html_url);
             }
 
             if let Some(watchers_count) = &r.watchers_count {
-                e.field("Watchers count", &watchers_count, true);
+                e.field("Watchers count", watchers_count, true);
             }
 
             if let Some(forks_count) = &r.forks_count {
-                e.field("Forks count", &forks_count, true);
+                e.field("Forks count", forks_count, true);
             }
 
             if let Some(stargazers_count) = &r.stargazers_count {
-                e.field("Stargazers count", &stargazers_count, true);
+                e.field("Stargazers count", stargazers_count, true);
             }
 
             if let Some(clone_url) = &r.clone_url {
-                e.field("Clone url", &clone_url, false);
+                e.field("Clone url", clone_url, false);
             }
 
             if let Some(fork) = &r.fork {

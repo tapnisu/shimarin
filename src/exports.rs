@@ -15,7 +15,7 @@ pub fn gen_password(pass_len: usize) -> String {
     let mut rng = rand::thread_rng();
 
     for _ in 0..pass_len {
-        password.push(charset[rng.gen_range(0..charset.iter().count())])
+        password.push(charset[rng.gen_range(0..charset.len())])
     }
 
     password
