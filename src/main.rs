@@ -29,12 +29,12 @@ async fn main() {
         })
         .token(std::env::var("DISCORD_TOKEN").expect("missing DISCORD_TOKEN"))
         .intents(serenity::GatewayIntents::non_privileged())
-        .setup(|ctx, _ready, framework| {
+        .setup(|ctx, ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
                 ctx.set_activity(Activity::playing("Reading book")).await;
 
-                println!("{} is connected!", _ready.user.tag());
+                println!("{} is connected!", ready.user.tag());
 
                 Ok(Data {})
             })
