@@ -6,10 +6,10 @@ mod manga;
 mod password;
 mod user;
 
-pub use crate::commands::avatar::*;
-pub use crate::commands::fromhtml::*;
-pub use crate::commands::genshincodes::*;
-pub use crate::commands::github::*;
-pub use crate::commands::manga::*;
-pub use crate::commands::password::*;
-pub use crate::commands::user::*;
+pub use avatar::*;
+pub use fromhtml::*;
+pub use genshincodes::*;
+pub use github::*;
+pub use manga::*;
+pub use password::*;
+pub use user::*;
