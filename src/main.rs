@@ -14,12 +14,13 @@ async fn main() {
         .options(poise::FrameworkOptions {
             commands: vec![
                 avatar(),
+                fromhtml(),
+                genshincodes(),
+                ghrepo(),
+                ghuser(),
+                manga(),
                 password(),
                 user(),
-                ghuser(),
-                ghrepo(),
-                fromhtml(),
-                manga(),
             ],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("sr!".into()),

@@ -1,17 +1,16 @@
 use crate::exports::*;
-use serde::{Deserialize, Serialize};
-
 use poise::serenity_prelude::{self as serenity};
+use serde::Deserialize;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct MangaSearchItem {
-    id: String,
-    name: String,
+#[derive(Debug, Deserialize)]
+pub struct MangaSearchItem {
+    pub id: String,
+    pub name: String,
     #[serde(rename = "lastChapter")]
-    last_chapter: String,
-    thumbnail: String,
-    author: String,
-    url: String,
+    pub last_chapter: String,
+    pub thumbnail: String,
+    pub author: String,
+    pub url: String,
 }
 
 /// Get data about manga
