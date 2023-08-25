@@ -1,8 +1,8 @@
 mod commands;
 mod exports;
 
-use crate::commands::*;
-use crate::exports::Data;
+use commands::*;
+use exports::Data;
 use dotenvy::dotenv;
 use poise::serenity_prelude::{self as serenity, Activity};
 
