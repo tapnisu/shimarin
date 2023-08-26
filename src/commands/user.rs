@@ -11,13 +11,13 @@ pub async fn user(
 
     ctx.send(|reply| {
         reply.embed(|e| {
-            e.title(u.tag()).thumbnail(u.clone().face()).fields(vec![(
+            e.title(u.tag()).thumbnail(u.face()).fields(vec![(
                 "ID".to_string(),
                 u.id.to_string(),
                 true,
             )]);
 
-            if let Some(banner_url) = u.clone().banner_url() {
+            if let Some(banner_url) = u.banner_url() {
                 e.image(banner_url);
             }
 

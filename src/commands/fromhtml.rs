@@ -9,10 +9,8 @@ pub async fn fromhtml(
 ) -> Result<(), Error> {
     ctx.send(|reply| {
         reply.embed(|e| {
-            e.title("Your text").description(html2text::from_read(
-                text.as_bytes(),
-                if let Some(w) = width { w } else { 20 },
-            ))
+            e.title("Your text")
+                .description(html2text::from_read(text.as_bytes(), width.unwrap_or(20)))
         })
     })
     .await?;

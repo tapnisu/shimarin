@@ -24,11 +24,12 @@ pub async fn password(
     #[description = "Length of password"] length: usize,
 ) -> Result<(), Error> {
     ctx.send(|reply| {
-        reply.ephemeral(true);
         reply.embed(|e| {
             e.title("Your password")
-                .description("||".to_owned() + &gen_password(length) + "||")
-        })
+                .description(format!("||{}||", gen_password(length)))
+        });
+
+        reply.ephemeral(true)
     })
     .await?;
 
