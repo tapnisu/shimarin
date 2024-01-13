@@ -15,43 +15,38 @@ pub async fn ghuser(
         .await?;
 
     if page.items.is_empty() {
-        ctx.send(|reply| {
-            reply.ephemeral(true);
-            reply.embed(|e| e.title("User not found!"))
-        })
-        .await?;
+        let reply = {
+            let embed = serenity::CreateEmbed::default().title("User not found!");
+
+            poise::CreateReply::default().embed(embed).ephemeral(true)
+        };
+
+        ctx.send(reply).await?;
 
         return Ok(());
     }
 
     let u = &page.items[0];
 
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title(&u.login);
-            e.url(&u.url);
-            e.thumbnail(&u.avatar_url);
+    let reply = {
+        let embed = serenity::CreateEmbed::default()
+            .title(u.login.clone())
+            .url(u.url.clone())
+            .thumbnail(u.avatar_url.clone())
+            .fields(vec![("ID".to_string(), u.id.to_string(), true)]);
 
-            e.fields(vec![("ID", &u.id, true)]);
+        let components = vec![serenity::CreateActionRow::Buttons(vec![
+            serenity::CreateButton::new_link(u.url.clone()).label("Open in browser"),
+        ])];
 
-            e
-        });
+        poise::CreateReply::default()
+            .content("message 1")
+            .embed(embed)
+            .components(components)
+    };
 
-        reply.components(|c| {
-            c.add_action_row(
-                serenity::CreateActionRow::default()
-                    .add_button(
-                        serenity::CreateButton::default()
-                            .label("Open in browser")
-                            .url(&u.url)
-                            .style(serenity::ButtonStyle::Link)
-                            .to_owned(),
-                    )
-                    .to_owned(),
-            )
-        })
-    })
-    .await?;
+    ctx.send(reply).await?;
+
     Ok(())
 }
 
@@ -69,11 +64,13 @@ pub async fn ghrepo(
         .await?;
 
     if page.items.is_empty() {
-        ctx.send(|reply| {
-            reply.ephemeral(true);
-            reply.embed(|e| e.title("Repository not found!"))
-        })
-        .await?;
+        let reply = {
+            let embed = serenity::CreateEmbed::default().title("Repository not found!");
+
+            poise::CreateReply::default().embed(embed).ephemeral(true)
+        };
+
+        ctx.send(reply).await?;
 
         return Ok(());
     }
