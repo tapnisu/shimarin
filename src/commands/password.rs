@@ -1,4 +1,5 @@
 use crate::exports::*;
+use poise::serenity_prelude::{self as serenity};
 use rand::Rng;
 
 // Generates password string
@@ -23,15 +24,15 @@ pub async fn password(
     ctx: Context<'_>,
     #[description = "Length of password"] length: usize,
 ) -> Result<(), Error> {
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title("Your password")
-                .description(format!("||{}||", gen_password(length)))
-        });
+    let reply = {
+        let embed = serenity::CreateEmbed::default()
+            .title("Your password")
+            .description(format!("||{}||", gen_password(length)));
 
-        reply.ephemeral(true)
-    })
-    .await?;
+        poise::CreateReply::default().embed(embed).ephemeral(true)
+    };
+
+    ctx.send(reply).await?;
 
     Ok(())
 }

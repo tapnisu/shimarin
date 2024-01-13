@@ -9,22 +9,17 @@ pub async fn user(
 ) -> Result<(), Error> {
     let u = user.as_ref().unwrap_or_else(|| ctx.author());
 
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title(u.tag()).thumbnail(u.face()).fields(vec![(
-                "ID".to_string(),
-                u.id.to_string(),
-                true,
-            )]);
+    let reply = {
+        let embed = serenity::CreateEmbed::default()
+            .title(u.tag())
+            .thumbnail(u.face())
+            .fields(vec![("ID".to_string(), u.id.to_string(), true)])
+            .image(u.banner_url().unwrap_or("".to_owned()));
 
-            if let Some(banner_url) = u.banner_url() {
-                e.image(banner_url);
-            }
+        poise::CreateReply::default().embed(embed)
+    };
 
-            e
-        })
-    })
-    .await?;
+    ctx.send(reply).await?;
 
     Ok(())
 }

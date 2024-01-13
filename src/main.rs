@@ -2,9 +2,9 @@ mod commands;
 mod exports;
 
 use commands::*;
-use exports::Data;
 use dotenvy::dotenv;
-use poise::serenity_prelude::{self as serenity, Activity};
+use exports::Data;
+use poise::serenity_prelude::{self as serenity, ActivityData};
 
 #[tokio::main]
 async fn main() {
@@ -28,18 +28,25 @@ async fn main() {
             },
             ..Default::default()
         })
-        .token(std::env::var("DISCORD_TOKEN").expect("missing DISCORD_TOKEN"))
-        .intents(serenity::GatewayIntents::non_privileged())
         .setup(|ctx, ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
-                ctx.set_activity(Activity::playing("Reading book")).await;
+                ctx.set_activity(Some(ActivityData::playing("Reading book")));
 
                 println!("{} is connected!", ready.user.tag());
 
                 Ok(Data {})
             })
-        });
+        })
+        .build();
 
-    framework.run().await.unwrap();
+    let token = std::env::var("DISCORD_TOKEN").expect("missing DISCORD_TOKEN");
+    let intents =
+        serenity::GatewayIntents::non_privileged() | serenity::GatewayIntents::MESSAGE_CONTENT;
+
+    let client = serenity::ClientBuilder::new(token, intents)
+        .framework(framework)
+        .await;
+
+    client.unwrap().start().await.unwrap()
 }
