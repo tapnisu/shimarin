@@ -26,39 +26,36 @@ pub async fn manga(
             .await?;
 
     if manga_list.is_empty() {
-        ctx.send(|reply| {
-            reply.ephemeral(true);
-            reply.embed(|e| e.title("Sorry! Manga not found!"))
-        })
-        .await?;
+        let reply = {
+            let embed = serenity::CreateEmbed::default().title("Sorry! Manga not found!");
+
+            poise::CreateReply::default().embed(embed).ephemeral(true)
+        };
+
+        ctx.send(reply).await?;
 
         return Ok(());
     }
 
     let manga = &manga_list[0];
 
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title(&manga.name)
-                .url(&manga.url)
-                .image(&manga.thumbnail)
-                .fields(vec![("Last chapter", &manga.last_chapter, true)])
-        });
+    let reply = {
+        let embed = serenity::CreateEmbed::default()
+            .title(manga.name.clone())
+            .url(manga.url.clone())
+            .image(manga.thumbnail.clone())
+            .fields(vec![("Last chapter".to_owned(), manga.last_chapter.clone(), true)]);
 
-        reply.components(|c| {
-            c.add_action_row(
-                serenity::CreateActionRow::default()
-                    .add_button(
-                        serenity::CreateButton::default()
-                            .label("Read manga in browser")
-                            .url(&manga.url)
-                            .style(serenity::ButtonStyle::Link)
-                            .to_owned(),
-                    )
-                    .to_owned(),
-            )
-        })
-    })
-    .await?;
+        let components = vec![serenity::CreateActionRow::Buttons(vec![
+            serenity::CreateButton::new_link(manga.url.clone()).label("Read manga in browser"),
+        ])];
+
+        poise::CreateReply::default()
+            .embed(embed)
+            .components(components)
+    };
+
+    ctx.send(reply).await?;
+
     Ok(())
 }

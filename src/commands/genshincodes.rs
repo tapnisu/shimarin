@@ -39,36 +39,29 @@ pub async fn genshincodes(ctx: Context<'_>) -> Result<(), Error> {
         .await?
         .codes;
 
-    ctx.send(|reply| {
-        reply.embed(|e| {
-            e.title("Codes for Genshin Impact")
-                .description("You can activate them in game, and get rewards!")
-                .url(ACTIVATE_GIFT_URL);
-
-            e.fields(
+    let reply = {
+        let embed = serenity::CreateEmbed::default()
+            .title("Codes for Genshin Impact")
+            .description("You can activate them in game, and get rewards!")
+            .url(ACTIVATE_GIFT_URL)
+            .fields(
                 codes
                     .iter()
                     .filter(|code| !code.is_expired)
                     .map(|code| (code.code.clone(), code.reward.clone(), true))
                     .collect::<Vec<(String, String, bool)>>(),
-            )
-        });
+            );
 
-        reply.components(|c| {
-            c.add_action_row(
-                serenity::CreateActionRow::default()
-                    .add_button(
-                        serenity::CreateButton::default()
-                            .label("Activate")
-                            .url(ACTIVATE_GIFT_URL)
-                            .style(serenity::ButtonStyle::Link)
-                            .to_owned(),
-                    )
-                    .to_owned(),
-            )
-        })
-    })
-    .await?;
+        let components = vec![serenity::CreateActionRow::Buttons(vec![
+            serenity::CreateButton::new_link(ACTIVATE_GIFT_URL).label("Activate"),
+        ])];
+
+        poise::CreateReply::default()
+            .embed(embed)
+            .components(components)
+    };
+
+    ctx.send(reply).await?;
 
     Ok(())
 }
