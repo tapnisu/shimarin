@@ -30,9 +30,9 @@ Type "/" to see commands!
 
 3. Set up your [.env](.env.sample) (sample in [.env.sample](.env.sample)).
 
-```env
-DISCORD_TOKEN="DISCORD_BOT_TOKEN_FROM_<https://discord.com/developers/applications>"
-```
+   ```env
+   DISCORD_TOKEN="DISCORD_BOT_TOKEN_FROM_<https://discord.com/developers/applications>"
+   ```
 
 4. Start bot - `cargo run -r`
 
