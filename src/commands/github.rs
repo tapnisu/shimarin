@@ -30,13 +30,13 @@ pub async fn ghuser(
 
     let reply = {
         let embed = serenity::CreateEmbed::default()
-            .title(u.login.clone())
-            .url(u.url.clone())
-            .thumbnail(u.avatar_url.clone())
+            .title(u.login.to_owned())
+            .url(u.url.to_owned())
+            .thumbnail(u.avatar_url.to_owned())
             .fields(vec![("ID".to_owned(), u.id.to_string(), true)]);
 
         let components = vec![serenity::CreateActionRow::Buttons(vec![
-            serenity::CreateButton::new_link(u.url.clone()).label("Open in browser"),
+            serenity::CreateButton::new_link(u.url.to_owned()).label("Open in browser"),
         ])];
 
         poise::CreateReply::default()

@@ -41,13 +41,13 @@ pub async fn manga(
 
     let reply = {
         let embed = serenity::CreateEmbed::default()
-            .title(manga.name.clone())
-            .url(manga.url.clone())
-            .image(manga.thumbnail.clone())
-            .fields(vec![("Last chapter".to_owned(), manga.last_chapter.clone(), true)]);
+            .title(manga.name.to_owned())
+            .url(manga.url.to_owned())
+            .image(manga.thumbnail.to_owned())
+            .fields(vec![("Last chapter".to_owned(), manga.last_chapter.to_owned(), true)]);
 
         let components = vec![serenity::CreateActionRow::Buttons(vec![
-            serenity::CreateButton::new_link(manga.url.clone()).label("Read manga in browser"),
+            serenity::CreateButton::new_link(manga.url.to_owned()).label("Read manga in browser"),
         ])];
 
         poise::CreateReply::default()

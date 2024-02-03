@@ -48,7 +48,7 @@ pub async fn genshincodes(ctx: Context<'_>) -> Result<(), Error> {
                 codes
                     .iter()
                     .filter(|code| !code.is_expired)
-                    .map(|code| (code.code.clone(), code.reward.clone(), true))
+                    .map(|code| (code.code.to_owned(), code.reward.to_owned(), true))
                     .collect::<Vec<(String, String, bool)>>(),
             );
 
