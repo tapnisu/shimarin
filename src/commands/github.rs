@@ -49,95 +49,83 @@ pub async fn ghuser(
     Ok(())
 }
 
-// /// Display info about repository from GitHub
-// #[poise::command(slash_command, prefix_command)]
-// pub async fn ghrepo(
-//     ctx: Context<'_>,
-//     #[description = "Repository to search for"] query: String,
-// ) -> Result<(), Error> {
-//     let page = octocrab::instance()
-//         .search()
-//         .repositories(&query.trim())
-//         .per_page(1)
-//         .send()
-//         .await?;
+/// Display info about repository from GitHub
+#[poise::command(slash_command, prefix_command)]
+pub async fn ghrepo(
+    ctx: Context<'_>,
+    #[description = "Repository to search for"] query: String,
+) -> Result<(), Error> {
+    let page = octocrab::instance()
+        .search()
+        .repositories(&query.trim())
+        .per_page(1)
+        .send()
+        .await?;
 
-//     if page.items.is_empty() {
-//         let reply = {
-//             let embed = serenity::CreateEmbed::default().title("Repository not found!");
+    if page.items.is_empty() {
+        let reply = {
+            let embed = serenity::CreateEmbed::default().title("Repository not found!");
 
-//             poise::CreateReply::default().embed(embed).ephemeral(true)
-//         };
+            poise::CreateReply::default().embed(embed).ephemeral(true)
+        };
 
-//         ctx.send(reply).await?;
+        ctx.send(reply).await?;
 
-//         return Ok(());
-//     }
+        return Ok(());
+    }
 
-//     let r = &page.items[0];
+    let r = &page.items[0];
 
-//     ctx.send(|reply| {
-//         reply.embed(|e| {
-//             if let Some(full_name) = &r.full_name {
-//                 e.title(full_name);
-//             } else {
-//                 e.title(&r.name);
-//             }
+    let reply = {
+        let mut embed = serenity::CreateEmbed::default()
+            .title(r.full_name.to_owned().unwrap_or_else(|| r.name.to_owned()))
+            .url(r.url.to_owned())
+            .fields(vec![("ID", r.id.to_string(), true)]);
 
-//             if let Some(desc) = &r.description {
-//                 e.description(desc);
-//             }
+        if let Some(desc) = r.description.to_owned() {
+            embed = embed.description(desc);
+        }
 
-//             if let Some(html_url) = &r.html_url {
-//                 e.url(html_url);
-//             }
+        if let Some(html_url) = r.html_url.to_owned() {
+            embed = embed.url(html_url);
+        }
 
-//             if let Some(watchers_count) = &r.watchers_count {
-//                 e.field("Watchers count", watchers_count, true);
-//             }
+        if let Some(watchers_count) = r.watchers_count {
+            embed = embed.field("Watchers count", watchers_count.to_string(), true);
+        }
 
-//             if let Some(forks_count) = &r.forks_count {
-//                 e.field("Forks count", forks_count, true);
-//             }
+        if let Some(forks_count) = r.forks_count {
+            embed = embed.field("Forks count", forks_count.to_string(), true);
+        }
 
-//             if let Some(stargazers_count) = &r.stargazers_count {
-//                 e.field("Stargazers count", stargazers_count, true);
-//             }
+        if let Some(stargazers_count) = r.stargazers_count {
+            embed = embed.field("Stargazers count", stargazers_count.to_string(), true);
+        }
 
-//             if let Some(clone_url) = &r.clone_url {
-//                 e.field("Clone url", clone_url, false);
-//             }
+        if let Some(fork) = r.fork {
+            if fork {
+                embed = embed.field("Fork", "Yes", true);
+            }
+        }
 
-//             if let Some(fork) = &r.fork {
-//                 if *fork {
-//                     e.field("Fork", "true", true);
-//                 }
-//             }
+        if let Some(default_branch) = r.default_branch.to_owned() {
+            embed = embed.field("Default branch", default_branch, true);
+        }
 
-//             if let Some(default_branch) = &r.default_branch {
-//                 e.field("Default branch", default_branch, true);
-//             }
+        if let Some(clone_url) = r.clone_url.to_owned() {
+            embed = embed.field("Clone url", format!("`{clone_url}`"), false);
+        }
 
-//             e.fields(vec![("ID", &r.id, true)]);
+        let components = vec![serenity::CreateActionRow::Buttons(vec![
+            serenity::CreateButton::new_link(r.url.to_owned()).label("Open in browser"),
+        ])];
 
-//             e
-//         });
+        poise::CreateReply::default()
+            .embed(embed)
+            .components(components)
+    };
 
-//         reply.components(|c| {
-//             c.add_action_row(
-//                 serenity::CreateActionRow::default()
-//                     .add_button(
-//                         serenity::CreateButton::default()
-//                             .label("Open in browser")
-//                             .url(&r.url)
-//                             .style(serenity::ButtonStyle::Link)
-//                             .to_owned(),
-//                     )
-//                     .to_owned(),
-//             )
-//         })
-//     })
-//     .await?;
+    ctx.send(reply).await?;
 
-//     Ok(())
-// }
+    Ok(())
+}

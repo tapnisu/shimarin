@@ -16,7 +16,7 @@ async fn main() {
                 avatar(),
                 fromhtml(),
                 genshincodes(),
-                // ghrepo(),
+                ghrepo(),
                 ghuser(),
                 manga(),
                 password(),
