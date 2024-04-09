@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 dotenvy = "0.15"
 html2text = "0.9"
-octocrab = "0.37"
+octocrab = "0.38"
 poise = "0.6"
 rand = "0.8"
 reqwest = { version = "0.12", features = ["json"] }
