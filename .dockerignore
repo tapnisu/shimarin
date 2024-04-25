@@ -17,3 +17,11 @@ Cargo.lock
 .env
 .env.test
 .env.production
+
+.github/
+
+.env.sample
+.gitignore
+Dockerfile
+LICENSE
+README.md
