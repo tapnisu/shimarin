@@ -15,7 +15,6 @@ async fn main() {
             commands: vec![
                 avatar(),
                 fromhtml(),
-                genshincodes(),
                 ghrepo(),
                 ghuser(),
                 manga(),
