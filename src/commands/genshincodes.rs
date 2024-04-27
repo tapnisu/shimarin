@@ -39,29 +39,26 @@ pub async fn genshincodes(ctx: Context<'_>) -> Result<(), Error> {
         .await?
         .codes;
 
-    let reply = {
-        let embed = serenity::CreateEmbed::default()
-            .title("Codes for Genshin Impact")
-            .description("You can activate them in game, and get rewards!")
-            .url(ACTIVATE_GIFT_URL)
-            .fields(
-                codes
-                    .iter()
-                    .filter(|code| !code.is_expired)
-                    .map(|code| (code.code.to_owned(), code.reward.to_owned(), true))
-                    .collect::<Vec<(String, String, bool)>>(),
-            );
+    let embed = serenity::CreateEmbed::default()
+        .title("Codes for Genshin Impact")
+        .description("You can activate them in game, and get rewards!")
+        .url(ACTIVATE_GIFT_URL)
+        .fields(
+            codes
+                .iter()
+                .filter(|code| !code.is_expired)
+                .map(|code| (code.code.to_owned(), code.reward.to_owned(), true))
+                .collect::<Vec<(String, String, bool)>>(),
+        );
 
-        let components = vec![serenity::CreateActionRow::Buttons(vec![
-            serenity::CreateButton::new_link(ACTIVATE_GIFT_URL).label("Activate"),
-        ])];
+    let components = vec![serenity::CreateActionRow::Buttons(vec![
+        serenity::CreateButton::new_link(ACTIVATE_GIFT_URL).label("Activate"),
+    ])];
 
-        poise::CreateReply::default()
-            .embed(embed)
-            .components(components)
-    };
+    let reply = poise::CreateReply::default()
+        .embed(embed)
+        .components(components);
 
     ctx.send(reply).await?;
-
     Ok(())
 }

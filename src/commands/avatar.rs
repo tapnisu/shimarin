@@ -1,7 +1,7 @@
 use crate::exports::*;
 use poise::serenity_prelude::{self as serenity};
 
-/// Get user's avatar
+/// Get avatar for user
 #[poise::command(slash_command, prefix_command)]
 pub async fn avatar(
     ctx: Context<'_>,
@@ -9,15 +9,12 @@ pub async fn avatar(
 ) -> Result<(), Error> {
     let u = user.as_ref().unwrap_or_else(|| ctx.author());
 
-    let reply = {
-        let embed = serenity::CreateEmbed::default()
-            .title(u.tag())
-            .image(u.face());
+    let embed = serenity::CreateEmbed::default()
+        .title(u.tag())
+        .image(u.face());
 
-        poise::CreateReply::default().embed(embed)
-    };
+    let reply = poise::CreateReply::default().embed(embed);
 
     ctx.send(reply).await?;
-
     Ok(())
 }

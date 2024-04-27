@@ -37,6 +37,7 @@ pub async fn password(
         .description(format!("||{}||", password));
 
     let reply = poise::CreateReply::default().embed(embed).ephemeral(true);
+
     ctx.send(reply).await?;
     Ok(())
 }
