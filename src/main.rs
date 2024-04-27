@@ -10,23 +10,26 @@ use poise::serenity_prelude::{self as serenity, ActivityData};
 async fn main() {
     dotenv().ok();
 
-    let framework = poise::Framework::builder()
-        .options(poise::FrameworkOptions {
-            commands: vec![
-                avatar(),
-                fromhtml(),
-                ghrepo(),
-                ghuser(),
-                manga(),
-                password(),
-                user(),
-            ],
-            prefix_options: poise::PrefixFrameworkOptions {
-                prefix: Some("sr!".into()),
-                ..Default::default()
-            },
+    let commands = vec![
+        avatar(),
+        fromhtml(),
+        ghrepo(),
+        ghuser(),
+        manga(),
+        password(),
+        user(),
+    ];
+    let options = poise::FrameworkOptions {
+        commands,
+        prefix_options: poise::PrefixFrameworkOptions {
+            prefix: Some("sr!".into()),
             ..Default::default()
-        })
+        },
+        ..Default::default()
+    };
+
+    let framework = poise::Framework::builder()
+        .options(options)
         .setup(|ctx, ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
