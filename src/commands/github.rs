@@ -15,14 +15,10 @@ pub async fn ghuser(
         .await?;
 
     if page.items.is_empty() {
-        let reply = {
-            let embed = serenity::CreateEmbed::default().title("User not found!");
-
-            poise::CreateReply::default().embed(embed).ephemeral(true)
-        };
+        let embed = serenity::CreateEmbed::default().title("User not found!");
+        let reply = poise::CreateReply::default().embed(embed).ephemeral(true);
 
         ctx.send(reply).await?;
-
         return Ok(());
     }
 
@@ -60,14 +56,10 @@ pub async fn ghrepo(
         .await?;
 
     if page.items.is_empty() {
-        let reply = {
-            let embed = serenity::CreateEmbed::default().title("Repository not found!");
-
-            poise::CreateReply::default().embed(embed).ephemeral(true)
-        };
+        let embed = serenity::CreateEmbed::default().title("Repository not found!");
+        let reply = poise::CreateReply::default().embed(embed).ephemeral(true);
 
         ctx.send(reply).await?;
-
         return Ok(());
     }
 
