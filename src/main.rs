@@ -1,10 +1,12 @@
 mod commands;
 mod exports;
+mod handler;
 
 use commands::*;
 use dotenvy::dotenv;
 use exports::Data;
-use poise::serenity_prelude::{self as serenity, ActivityData};
+use handler::Handler;
+use poise::serenity_prelude::{self as serenity};
 
 #[tokio::main]
 async fn main() {
@@ -33,10 +35,7 @@ async fn main() {
         .setup(|ctx, ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
-                ctx.set_activity(Some(ActivityData::playing("Reading book")));
-
                 println!("{} is connected!", ready.user.tag());
-
                 Ok(Data {})
             })
         })
@@ -48,6 +47,7 @@ async fn main() {
 
     let client = serenity::ClientBuilder::new(token, intents)
         .framework(framework)
+        .event_handler(Handler {})
         .await;
 
     client.unwrap().start().await.unwrap()
