@@ -3,6 +3,9 @@ name = "shimarin"
 version = "0.1.1"
 edition = "2021"
 
+# Don't forget to update `.github/workflows/test.yml`
+rust-version = "1.74"
+
 [dependencies]
 dotenvy = "0.15"
 html2text = "0.12"
